@@ -50,6 +50,7 @@ import {
   OPENCLAUDE_MANAGED_HOOK_PLAN,
   type ClaudeManagedHookPlan
 } from './claude-managed-hook-events'
+import { cleanupLegacyClaudeConfig } from './claude-hook-legacy-cleanup'
 
 type ClaudeHookServiceOptions = {
   agent: AgentHookInstallStatus['agent']
@@ -191,6 +192,7 @@ export class ClaudeHookService {
     } else if (plan.statusLine === 'retire') {
       nextConfig = this.retireManagedStatusLine(nextConfig)
     }
+    cleanupLegacyClaudeConfig(configPath, this.options.settings)
     writeHooksJson(configPath, nextConfig)
     return this.getStatus(options)
   }
